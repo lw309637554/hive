@@ -2603,9 +2603,13 @@ private void constructOneLBLocationMap(FileStatus fSta,
         }
       }
       if (!isSrcLocal) {
+          LOG.info("Copying sourceaaaa111 " + srcf.toString()+","+srcf.toUri() +"," + srcf.toUri().getScheme() + " to " +  destf.toString()+","+destf.toUri() + " because HDFS encryption zones are different.");
+          LOG.info("Copying sourceaaaa " + srcf.getFileSystem(conf).getUri() + " to " +  destf.getFileSystem(conf).getUri() + " because HDFS encryption zones are different.");
         // For NOT local src file, rename the file
-        if (hdfsEncryptionShim != null && (hdfsEncryptionShim.isPathEncrypted(srcf) || hdfsEncryptionShim.isPathEncrypted(destf))
-            && !hdfsEncryptionShim.arePathsOnSameEncryptionZone(srcf, destf))
+//        if (!FileUtils.equalsFileSystem(srcf.getFileSystem(conf), destf.getFileSystem(conf)) || (hdfsEncryptionShim != null && (hdfsEncryptionShim.isPathEncrypted(srcf) || hdfsEncryptionShim.isPathEncrypted(destf))
+//            && !hdfsEncryptionShim.arePathsOnSameEncryptionZone(srcf, destf)))
+          if (!FileUtils.equalsFileSystem(srcf.getFileSystem(conf), destf.getFileSystem(conf)))
+//        if (hdfsEncryptionShim != null&& !hdfsEncryptionShim.arePathsOnSameEncryptionZone(srcf, destf))
         {
           LOG.info("Copying source " + srcf + " to " + destf + " because HDFS encryption zones are different.");
           success = FileUtils.copy(srcf.getFileSystem(conf), srcf, destf.getFileSystem(conf), destf,
